@@ -8,6 +8,7 @@ const Main = () => {
   const [ingredients, setIngredients] = React.useState([])
   // const [recipeShown, setRecipeShown] = React.useState(false)
   const [recipe, setRecipe] = React.useState('')
+  const recipeSection = React.useRef(null)
   
   // Submit form data using action attribute instead:
 
@@ -21,6 +22,11 @@ const Main = () => {
     const recipeMarkdown = await getRecipeFromMistral(ingredients)
     setRecipe(recipeMarkdown)
   }
+
+  React.useEffect(()=>{
+    if (recipe !== '' && recipeSection.current !== null)
+      recipeSection.current.scrollIntoView({behavior: 'smooth'})
+  }, [recipe])
 
   return (
     <main>
@@ -38,7 +44,7 @@ const Main = () => {
       </form>
       { ingredients.length > 0 ?
 
-      <IngredientList ingredients={ingredients} getRecipe={getRecipe}/>
+      <IngredientList ingredients={ingredients} getRecipe={getRecipe} ref={recipeSection}/>
      
       :
       null
